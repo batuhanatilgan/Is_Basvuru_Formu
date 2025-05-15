@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Atılgan Group İş Başvuru Formu</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Montserrat fontunu Google Fonts üzerinden çağırıyoruz -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* Genel Ayarlar */
+    body {
+      /* Mor-mavi canlı bir gradyan arka plan */
+      background: linear-gradient(135deg, #2c3e50, #4ca1af);
+      font-family: 'Montserrat', sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      padding: 20px 30px;
+      /* Turkuaz-mavi tonlarında canlı bir gradyan */
+      background: linear-gradient(135deg, #1abc9c, #16a085);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    .header .logo img {
+      width: 120px;
+      margin-right: 20px;
+    }
+    .header-title h1 {
+      font-size: 32px;
+      font-weight: 700;
+      color: #ffffff;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      margin: 0;
+    }
+    /* Form Kutusu */
+    .container {
+      background-color: #ffffff;
+      max-width: 700px;
+      margin: 40px auto;
+      padding: 30px 40px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    /* Flash Mesajı */
+    .flash {
+      background-color: #d1e7dd;
+      color: #0f5132;
+      padding: 12px;
+      border-radius: 5px;
+      text-align: center;
+      margin-bottom: 15px;
+      font-weight: bold;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #343a40;
+    }
+    label {
+      display: block;
+      margin: 15px 0 5px;
+      font-weight: 600;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      font-size: 16px;
+      margin-bottom: 10px;
+      background-color: #fff;
+      color: #495057;
+    }
+    .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .checkbox-group label {
+      background-color: #f8f9fa;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .submit-btn {
+      width: 100%;
+      background-color: #ff416c;
+      color: #ffffff;
+      font-size: 18px;
+      padding: 12px;
+      border: none;
+      border-radius: 4px;
+      margin-top: 20px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .submit-btn:hover {
+      background-color: #ff4b2b;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header: Logo ve Atılgan Group başlığı -->
+  <div class="header">
+    <div class="logo">
+      <img src="/assets/images/atilgan_logo.png" alt="Atılgan Group Logo">
+    </div>
+    <div class="header-title">
+      <h1>Atılgan Group</h1>
+    </div>
+  </div>
+  
+  <!-- Form Kutusu -->
+  <div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    
+    <h2>İş Başvuru Formuna Hoş Geldiniz</h2>
+    <form method="POST" action="/basvuru">
+      <label for="ad">Ad Soyad</label>
+      <input type="text" id="ad" name="ad" required>
+  
+      <label for="eposta">E-posta</label>
+      <input type="email" id="eposta" name="eposta" required>
+  
+      <label for="telefon">Telefon</label>
+      <input type="text" id="telefon" name="telefon" required>
+  
+      <label for="mezuniyet">Mezuniyet Bölümü</label>
+      <select id="mezuniyet" name="mezuniyet" required>
+        <option value="">Seçiniz</option>
+        <option>Bilgisayar Muhendisligi</option>
+        <option>Yazilim Muhendisligi</option>
+        <option>Yonetim Bilisim Sistemleri</option>
+        <option>Bilisim Sistemleri ve Teknolojileri</option>
+        <option>Elektrik Elektronik Muhendisligi</option>
+      </select>
+  
+      <label for="deneyim">Deneyim Yılı</label>
+      <input type="number" id="deneyim" name="deneyim" required>
+  
+      <label for="onyazi">Ön Yazı (Kendinizden kısaca bahsedin)</label>
+      <textarea id="onyazi" name="onyazi" rows="4" required></textarea>
+  
+      <label>Programlama Dilleri</label>
+      <div class="checkbox-group">
+        {% for dil in diller %}
+          <label>
+            <input type="checkbox" name="programlama_dilleri" value="{{ dil }}"> {{ dil }}
+          </label>
+        {% endfor %}
+      </div>
+  
+      <label for="yabanci_dil">Yabancı Dil</label>
+      <select id="yabanci_dil" name="yabanci_dil" required>
+        <option>Ingilizce</option>
+        <option>Almanca</option>
+        <option>Fransizca</option>
+        <option>Ispanyolca</option>
+      </select>
+  
+      <label for="pozisyon">Pozisyon Tercihi</label>
+      <select id="pozisyon" name="pozisyon" required>
+        <option>Frontend Gelistiricisi</option>
+        <option>Backend Gelistiricisi</option>
+        <option>Full Stack Gelistiricisi</option>
+        <option>DevOps Muhendisi</option>
+        <option>Sistem Muhendisi</option>
+        <option>Yazilim Test Uzmani</option>
+        <option>Veritabani Yoneticisi</option>
+      </select>
+  
+      <button type="submit" class="submit-btn">Başvuruyu Gönder</button>
+    </form>
+  </div>
+</body>
+</html>
